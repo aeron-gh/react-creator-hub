@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from "react";
 import { apiFetch, clearToken, getToken, setToken } from "../lib/api";
-import { get } from "https";
 
 export interface User {
   id: string;
@@ -54,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = (await res.json()) as { user: User };
         setUser(data.user);
-        console.log(user)
+        console.log(data.user)
       }
       setLoading(false);
     })();
@@ -105,6 +104,6 @@ export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) {
     throw new Error("useAuth must be used within AuthProvider");
-  }
+  }  
   return ctx;
 }

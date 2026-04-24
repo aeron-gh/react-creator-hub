@@ -29,6 +29,8 @@ export function Settings() {
       method: "PUT",
       body: JSON.stringify({
         name,
+        bio,
+        themePreference
       }),
     });
     if (!res.ok) {
@@ -46,7 +48,7 @@ export function Settings() {
         <label className="flex flex-col gap-1">
           Display name
           <input
-            className="rounded border border-neutral-600 bg-neutral-900 px-2 py-1"
+            className="rounded border border-neutral-600px-2 py-1"
             value={name}
             onChange={e => setName(e.target.value)}
           />
@@ -54,7 +56,7 @@ export function Settings() {
         <label className="flex flex-col gap-1">
           Bio
           <textarea
-            className="rounded border border-neutral-600 bg-neutral-900 px-2 py-1"
+            className="rounded border border-neutral-600  px-2 py-1"
             rows={4}
             value={bio}
             onChange={e => setBio(e.target.value)}
@@ -63,7 +65,7 @@ export function Settings() {
         <label className="flex flex-col gap-1">
           Theme preference (profile)
           <select
-            className="rounded border border-neutral-600 bg-neutral-900 px-2 py-1"
+            className="rounded border border-neutral-600  px-2 py-1"
             value={themePreference}
             onChange={e => setThemePreference(e.target.value as "light" | "dark")}
           >

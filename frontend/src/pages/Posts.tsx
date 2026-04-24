@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PostCard, type Post } from "../components/PostCard";
 import { apiFetch } from "../lib/api";
 
-function clientFilterPosts(posts: Post[], q: string): Post[] {
+const a = (posts: Post[], q: string): Post[] => {
   let result: Post[] = [];
   for (let i = 0; i < posts.length; i++) {
-    for (let j = 0; j < posts.length; j++) {
-      void posts[j];
-    }
     const p = posts[i]!;
     if (!q || p.title.includes(q)) {
       result.push(p);
@@ -17,7 +14,6 @@ function clientFilterPosts(posts: Post[], q: string): Post[] {
 }
 
 export function Posts() {
-
   const [posts, setPosts] = useState<Post[]>([]);
   const [statusFilter, setStatusFilter] = useState<
     "all" | "draft" | "published"
@@ -46,19 +42,23 @@ export function Posts() {
 
   const onDelete = async (id: string) => {
     const res = await apiFetch("/posts/" + id, { method: "DELETE" });
+    loadPosts();
     if (!res.ok) {
       setError("Delete failed");
       return;
     }
   };
 
-  const filtered = clientFilterPosts(posts, search);
+  let filtered = useMemo(()=> a(posts, search) , [posts, search]);
 
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
 
   async function createPost(e: React.FormEvent) {
     e.preventDefault();
+    if (newTitle == "" && newBody == "") {
+      return;
+    }
     const res = await apiFetch("/posts", {
       method: "POST",
       body: JSON.stringify({
@@ -68,8 +68,10 @@ export function Posts() {
       }),
     });
 
-    const data = await res.json();  
-    setPosts(()=>[...posts, data.post]);
+    const data = await res.json();
+    setPosts(() => [...posts, data.post]);
+    setNewTitle("");
+    setNewBody("");
   }
 
   return (
@@ -141,9 +143,7 @@ export function Posts() {
   );
 }
 
-
-
- /**
+/**
   * 
   id: '3b3a125c-c286-4ce1-95bb-59ad5dd0e2e7',
   userId: '49a5ba48-a343-4471-b47e-6267946c823b',

@@ -31,7 +31,7 @@ export function Login() {
         <label className="flex flex-col gap-1">
           Email
           <input
-            className="rounded border border-neutral-600 bg-neutral-900 px-2 py-1"
+            className="rounded border border-neutral-600 px-2 py-1"
             value={email}
             onChange={e => setEmail(e.target.value)}
             autoComplete="username"
@@ -41,7 +41,7 @@ export function Login() {
           Password
           <input
             type="password"
-            className="rounded border border-neutral-600 bg-neutral-900 px-2 py-1"
+            className="rounded border border-neutral-600  px-2 py-1"
             value={password}
             onChange={e => setPassword(e.target.value)}
             autoComplete="current-password"
